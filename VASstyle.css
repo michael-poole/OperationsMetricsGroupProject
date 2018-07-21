@@ -1,0 +1,36 @@
+.jumbotron {
+    background-color: #4B1388;
+    color: white;
+    padding-top: 5px;
+    background-size:100% 100%;
+}
+
+.display-2 {
+    text-align: center;
+    color: white;
+    vertical-align: top;
+    font-size: 250%;
+    letter-spacing: 2px;
+}
+.col-md-4 {
+    text-align: center;
+    font-size: 100%;
+    letter-spacing: 1px;
+    font-family: 'Helvetica Neue', 'Helvetica, Arial', 'sans-serif'
+}
+
+.table {
+  border: 1px solid #e6e6ff;
+  border-collapse: collapse;
+}
+
+.table tr:nth-child(even) {
+    background-color: #e6e6ff;
+}
+
+.icon {
+	position:absolute;
+	left: 2%;
+	top: 30px;
+}
+

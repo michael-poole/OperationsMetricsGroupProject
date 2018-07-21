@@ -1,0 +1,73 @@
+/* Pre-Definitions */
+
+* {
+  box-sizing:border-box;
+	margin:0;
+	padding:0;
+	text-decoration:none;
+}
+
+html,body {
+	width:100%;
+}
+
+.container {
+  width: 80%;
+  display:block;
+  height: auto;
+  margin:0 auto;
+}
+
+.header {
+  position:relative;
+  top:10px;
+  display:block;
+  margin:0 auto;
+  width: 90px;
+  height: 30px;
+  background-color:#FFA500;
+  border-radius:5px;
+}
+
+.header h3 {
+  text-align:center;
+  font-size:24px;
+  color:#fff;
+}
+
+.tier-container {
+  position:relative;
+  display:block;
+  width:100%;
+  overflow:auto;
+  margin-top:75px;
+}
+
+.tier {
+  margin-left:130px;
+  font-size:20px;
+  text-align:center;
+}
+
+.graph-container {
+  position:relative;
+  display:block;
+  width: 100%;
+  height:500px;
+  background-color:#000;
+  margin-top:50px;
+}
+
+.bottom-container {
+  position:relative;
+  top:30px;
+  display:block;
+  width:100%;
+}
+
+.bottom-container span {
+  width:32%;
+  display:inline-block;
+  text-align:center;
+  color:#FFA500;
+}

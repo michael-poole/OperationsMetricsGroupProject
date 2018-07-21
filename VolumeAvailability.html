@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+      
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="VASstyle.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script>
+      $(document).ready(function() {
+        var table = $('#example').DataTable( {
+            "paging": false,
+            "bInfo": false
+        } );
+ 
+      $('a.toggle-vis').on( 'click', function (e) {
+        e.preventDefault();
+ 
+        // Get the column API object
+        var column = table.column( $(this).attr('data-column') );
+ 
+        // Toggle the visibility
+        column.visible( ! column.visible() );
+        } );
+      } );
+    </script>
+    <script>
+     $('#example').DataTable( {
+        responsive: true
+      } );
+    </script>
+    <script language="javascript" type="text/javascript">
+    $(document).ready(function(){
+        var earlyVal = 0;
+        var earlyCount = 0;
+        var lateVal = 0;
+        var lateCount = 0;
+        var onTimeCount = 0;
+        
+        var table = $('#example').DataTable();
+        var arrival = table.column([7]).data();
+        var minutes = table.column([8]).data();
+        
+        for(var i=0; i<arrival.length; i++)
+        {
+           if (arrival[i] == 'Early') 
+           {
+               earlyVal += Number(minutes[i]); 
+               earlyCount++;
+           }
+           else if(arrival[i] == 'Late')
+           {
+               lateVal += Number(minutes[i]);
+               lateCount++;
+           }
+           else{
+               onTimeCount++;
+           }
+        }
+        var earlyAverage = (earlyVal/earlyCount).toPrecision(2);
+        var lateAverage = (lateVal/lateCount).toPrecision(2);
+        var earlyPercentage = ((earlyCount/minutes.length)*100).toPrecision(2);
+        var latePercentage = ((lateCount/minutes.length)*100).toPrecision(2);
+        var onTimePercentage = ((onTimeCount/minutes.length)*100).toPrecision(2);
+
+        document.getElementById("early").innerHTML = earlyAverage;
+        document.getElementById("late").innerHTML = lateAverage;
+        document.getElementById("earlyperc").innerHTML = earlyPercentage;
+        document.getElementById("lateperc").innerHTML = latePercentage;
+        document.getElementById("onTimeperc").innerHTML = onTimePercentage;
+    });  
+    </script>
+  </head>
+  <body>
+        
+      <div class="jumbotron jumbotron-fluid" style="padding-bottom:10px;">
+	  <div class="icon">
+		<a href="index.html"><img src='images/Back.svg' width=40 style="filter: brightness(170%);"></a>
+	</div>
+          <h3 class="display-2">Volume Availability Status</h3>
+          <br>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <span id="earlyperc"></span>% Early
+                        <br>
+                        <b>Average Early Time:</b><br><span id="early"></span> minutes</div>
+                    <div class="col-md-4"><span class="center"></span><span id="onTimeperc"></span>% On-Time </div>
+                    <div class="col-md-4">
+                        <span id="lateperc"></span>% Late
+                        <br>
+                        <b>Average Late Time:</b><br><span id="late"></span> minutes
+                    </div>
+                </div>
+              </div>    
+      </div>
+      
+   <div id="toggle-menu" style="padding-left:5px;height:0;">  
+     Hide/Show Columns:  
+    <a class="toggle-vis" data-column="0">Division</a> | <a class="toggle-vis" data-column="1">Region</a> | <a class="toggle-vis" data-column="2">District</a> | <a class="toggle-vis" data-column="3">Location</a>
+    </div>
+      
+    <table id="example" class="table table-striped table-bordered" cellspacing="0" style="width:100%">
+    <thead>
+        <tr><th>Division</th><th>Region</th><th>District</th><th>Location</th><th>Vehicle ID</th><th>Inbound/Outbound</th><th>ETA</th><th>Arrival Status</th><th>Early/Late(mins)</th></tr>
+    </thead>
+    <tbody>
+     <tr><td>US Ops</td><td>Eastern</td><td>Bostonian</td><td>ORHA</td><td>WMC121A</td><td>Inbound</td><td>11:04 PM</td><td>Early</td><td>21</td></tr>
+     <tr><td>US Ops</td><td>Eastern</td><td>Bostonian</td><td>BEDA</td><td>KJM123K</td><td>Inbound</td><td>6:36 AM</td><td>Early</td><td>9</td></tr>
+     <tr><td>US Ops</td><td>Eastern</td><td>Bostonian</td><td>NZWA</td><td>MCM234D</td><td>Outbound</td><td>2:02 AM</td><td>Late</td><td>8</td></tr>
+     <tr><td>US Ops</td><td>Eastern</td><td>Bostonian</td><td>BVYA</td><td>JDJ545B</td><td>Inbound</td><td>6:24 PM</td><td>On Time</td><td>0</td></tr>
+    <tr><td>US Ops</td><td>Eastern</td><td>Bostonian</td><td>PVDA</td><td>MFS125W</td><td>Outbound</td><td>4:50 PM</td><td>Late</td><td>7</td></tr>
+     <tr><td>US Ops</td><td>Eastern</td><td>Bostonian</td><td>PSMA</td><td>CSB678R</td><td>Inbound</td><td>4:22 PM</td><td>Late</td><td>11</td></tr>
+     <tr><td>US Ops</td><td>Eastern</td><td>Bostonian</td><td>BGRA</td><td>PMF3POX</td><td>Outbound</td><td>12:42 PM</td><td>Early</td><td>28</td></tr>
+     <tr><td>US Ops</td><td>Eastern</td><td>Bostonian</td><td>AUGA</td><td>OJYRPUG</td><td>inbound</td><td>3:31 PM</td><td>On Time</td><td>0</td></tr>
+     <tr><td>US Ops</td><td>Eastern</td><td>Bostonian</td><td>OWDA</td><td>1KZ3SAF</td><td>inbound</td><td>1:32 PM</td><td>On Time</td><td>0</td></tr>
+     <tr><td>US Ops</td><td>Eastern</td><td>Bostonian</td><td>CEFA</td><td>KGVWGA5</td><td>outbound</td><td>1:56 AM</td><td>Early</td><td>22</td></tr>
+     <tr><td>US Ops</td><td>Eastern</td><td>Big Apple</td><td>NYCA</td><td>BOY1VWI</td><td>outbound</td><td>9:29 PM</td><td>Late</td><td>56</td></tr>
+     <tr><td>US Ops</td><td>Eastern</td><td>Big Apple</td><td>JRBA</td><td>76SFKJ5</td><td>outbound</td><td>7:10 PM</td><td>Early</td><td>59</td></tr>
+     <tr><td>US Ops</td><td>Eastern</td><td>Big Apple</td><td>WTCA</td><td>BGVNIRF</td><td>outbound</td><td>1:15 AM</td><td>Early</td><td>2</td></tr>
+     <tr><td>US Ops</td><td>Eastern</td><td>Big Apple</td><td>HPNA</td><td>NZI1MC9</td><td>outbound</td><td>12:07 PM</td><td>On Time</td><td>0</td></tr>
+     <tr><td>US Ops</td><td>Eastern</td><td>Big Apple</td><td>LGAA</td><td>2FNPZZ3</td><td>outbound</td><td>6:08 AM</td><td>On Time</td><td>0</td></tr>
+     <tr><td>US Ops</td><td>Eastern</td><td>Big Apple</td><td>FIDA</td><td>E22CR9J</td><td>outbound</td><td>2:28 PM</td><td>Late</td><td>45</td></tr>
+     <tr><td>US Ops</td><td>Eastern</td><td>Big Apple</td><td>JRAA</td><td>I8OO819</td><td>outbound</td><td>9:41 PM</td><td>Late</td><td>16</td></tr>
+     <tr><td>US Ops</td><td>Eastern</td><td>Big Apple</td><td>TSSA</td><td>I43YNQA</td><td>outbound</td><td>3:09 AM</td><td>Late</td><td>49</td></tr>
+     <tr><td>US Ops</td><td>Eastern</td><td>Big Apple</td><td>FBTA</td><td>QLVA656</td><td>outbound</td><td>1:45 PM</td><td>Late</td><td>7</td></tr>
+     <tr><td>US Ops</td><td>Eastern</td><td>Big Apple</td><td>FOKA</td><td>5WEOWQW</td><td>outbound</td><td>2:13 PM</td><td>Late</td><td>0</td></tr>
+     <tr><td>US Ops</td><td>Eastern</td><td>Capital</td><td>GAIA</td><td>TAP3LUJ</td><td>outbound</td><td>6:27 PM</td><td>Late</td><td>42</td></tr>
+     <tr><td>US Ops</td><td>Eastern</td><td>Capital</td><td>HGRA</td><td>KRSGW7G</td><td>outbound</td><td>3:53 PM</td><td>Late</td><td>59</td></tr>
+     <tr><td>US Ops</td><td>Eastern</td><td>Capital</td><td>DGNA</td><td>KAX5D1E</td><td>outbound</td><td>3:55 PM</td><td>Late</td><td>59</td></tr>
+     <tr><td>US Ops</td><td>Eastern</td><td>Capital</td><td>CHOA</td><td>3HV7LX0</td><td>outbound</td><td>12:54 AM</td><td>Late</td><td>17</td></tr>
+     <tr><td>US Ops</td><td>Eastern</td><td>Capital</td><td>ORFA</td><td>ILFCPUW</td><td>inbound</td><td>7:48 PM</td><td>Late</td><td>27</td></tr>
+     <tr><td>US Ops</td><td>Eastern</td><td>Capital</td><td>JPNA</td><td>4XXA0YL</td><td>inbound</td><td>5:36 PM</td><td>Early</td><td>30</td></tr>
+     <tr><td>US Ops</td><td>Eastern</td><td>Capital</td><td>MQIA</td><td>JCTGPJQ</td><td>inbound</td><td>10:52 AM</td><td>Early</td><td>58</td></tr>
+     <tr><td>US Ops</td><td>Eastern</td><td>Capital</td><td>PHFA</td><td>91UTH08</td><td>inbound</td><td>6:54 AM</td><td>Late</td><td>2</td></tr>
+     <tr><td>US Ops</td><td>Eastern</td><td>Capital</td><td>PTBA</td><td>0K8W31W</td><td>inbound</td><td>8:21 AM</td><td>On Time</td><td>0</td></tr>
+     <tr><td>US Ops</td><td>Eastern</td><td>Capital</td><td>BCBA</td><td>YLS6U50</td><td>inbound</td><td>5:55 PM</td><td>Late</td><td>60</td></tr>
+     <tr><td>US Ops</td><td>Western</td><td>Canyon</td><td>ZSYA</td><td>9GMFF74</td><td>inbound</td><td>1:59 PM</td><td>Late</td><td>36</td></tr>
+     <tr><td>US Ops</td><td>Western</td><td>Canyon</td><td>BTFA</td><td>NC8HEXS</td><td>outbound</td><td>7:00 AM</td><td>Early</td><td>10</td></tr>
+     <tr><td>US Ops</td><td>Western</td><td>Canyon</td><td>MSCA</td><td>NGQ16QN</td><td>outbound</td><td>11:09 AM</td><td>On Time</td><td>0</td></tr>
+     <tr><td>US Ops</td><td>Western</td><td>Canyon</td><td>SGUA</td><td>QDMY95T</td><td>outbound</td><td>10:21 AM</td><td>On Time</td><td>0</td></tr>
+     <tr><td>US Ops</td><td>Western</td><td>Canyon</td><td>OGDA</td><td>88XJS8S</td><td>outbound</td><td>12:27 AM</td><td>Early</td><td>34</td></tr>
+     <tr><td>US Ops</td><td>Western</td><td>Delta</td><td>VGTA</td><td>B931KE2</td><td>outbound</td><td>11:18 PM</td><td>Late</td><td>21</td></tr>
+     <tr><td>US Ops</td><td>Western</td><td>Delta</td><td>JACA</td><td>YKB65KU</td><td>outbound</td><td>11:31 AM</td><td>Early</td><td>13</td></tr>
+     <tr><td>US Ops</td><td>Western</td><td>Delta</td><td>ELPA</td><td>GQZ0GGU</td><td>inbound</td><td>10:56 PM</td><td>Early</td><td>11</td></tr>
+     <tr><td>US Ops</td><td>Western</td><td>Delta</td><td>LHUA</td><td>6OBE068</td><td>inbound</td><td>1:55 PM</td><td>On Time</td><td>0</td></tr>
+     <tr><td>US Ops</td><td>Western</td><td>Delta</td><td>RKSA</td><td>Z3Q79BD</td><td>inbound</td><td>3:50 PM</td><td>On Time</td><td>0</td></tr>
+     <tr><td>US Ops</td><td>Western</td><td>Delta</td><td>BJCA</td><td>JSMT4KP</td><td>inbound</td><td>7:05 PM</td><td>Late</td><td>3</td></tr>
+     <tr><td>US Ops</td><td>Western</td><td>Delta</td><td>WHHA</td><td>AB0KGGZ</td><td>inbound</td><td>7:36 PM</td><td>Late</td><td>50</td></tr>
+     <tr><td>US Ops</td><td>Western</td><td>Delta</td><td>RIWA</td><td>N87XNJE</td><td>inbound</td><td>6:06 AM</td><td>Late</td><td>40</td></tr>
+     <tr><td>US Ops</td><td>Western</td><td>Mountain</td><td>MTJA</td><td>G8LN3QL</td><td>outbound</td><td>8:50 PM</td><td>Late</td><td>42</td></tr>
+     <tr><td>US Ops</td><td>Western</td><td>Mountain</td><td>SBSA</td><td>8SSF1GI</td><td>outbound</td><td>5:06 AM</td><td>Late</td><td>35</td></tr>
+     <tr><td>US Ops</td><td>Western</td><td>Mountain</td><td>GCCA</td><td>Q18WD5N</td><td>outbound</td><td>7:08 AM</td><td>Late</td><td>32</td></tr>
+     <tr><td>US Ops</td><td>Western</td><td>Mountain</td><td>SHRA</td><td>3HSVZCO</td><td>inbound</td><td>12:22 AM</td><td>Late</td><td>7</td></tr>
+     <tr><td>US Ops</td><td>Western</td><td>Mountain</td><td>BKFA</td><td>OK4LQ2B</td><td>inbound</td><td>6:18 PM</td><td>Late</td><td>47</td></tr>
+     <tr><td>US Ops</td><td>Western</td><td>Mountain</td><td>DENA</td><td>GFH8125</td><td>inbound</td><td>7:31 AM</td><td>Late</td><td>49</td></tr>
+     <tr><td>US Ops</td><td>Western</td><td>Mountain</td><td>FTCA</td><td>NSM7W00</td><td>outbound</td><td>10:26 PM</td><td>Late</td><td>60</td></tr>
+     <tr><td>US Ops</td><td>Western</td><td>Pacific Northwest</td><td>EATA</td><td>8XV3301</td><td>outbound</td><td>12:12 PM</td><td>Early</td><td>16</td></tr>
+     <tr><td>US Ops</td><td>Western</td><td>Pacific Northwest</td><td>BVUA</td><td>AKJFH1V</td><td>outbound</td><td>4:24 AM</td><td>Early</td><td>50</td></tr>
+     <tr><td>US Ops</td><td>Western</td><td>Pacific Northwest</td><td>SEAA</td><td>P1BANVM</td><td>outbound</td><td>1:30 PM</td><td>Late</td><td>0</td></tr>
+     <tr><td>US Ops</td><td>Western</td><td>Pacific Northwest</td><td>LMTA</td><td>CWO2Z3B</td><td>outbound</td><td>10:48 PM</td><td>On Time</td><td>0</td></tr>
+     <tr><td>US Ops</td><td>Western</td><td>Pacific Northwest</td><td>PAEA</td><td>O09FYKJ</td><td>outbound</td><td>3:06 AM</td><td>Late</td><td>5</td></tr>
+     <tr><td>US Ops</td><td>Western</td><td>Pacific Northwest</td><td>MFRA</td><td>RNY95JX</td><td>inbound</td><td>4:52 AM</td><td>Late</td><td>3</td></tr>
+     <tr><td>US Ops</td><td>Western</td><td>Pacific Northwest</td><td>CLMA</td><td>VIKOEW1</td><td>inbound</td><td>12:56 AM</td><td>Early</td><td>39</td></tr>
+     <tr><td>US Ops</td><td>Western</td><td>Pacific Northwest</td><td>HIOA</td><td>RBW279V</td><td>inbound</td><td>1:58 PM</td><td>On Time</td><td>0</td></tr>
+     <tr><td>US Ops</td><td>Western</td><td>Pacific Northwest</td><td>PDTA</td><td>5OTE9I9</td><td>inbound</td><td>10:11 PM</td><td>On Time</td><td>0</td></tr>
+     <tr><td>US Ops</td><td>Western</td><td>Pacific Northwest</td><td>BOIA</td><td>W9RCV74</td><td>inbound</td><td>3:40 PM</td><td>Early</td><td>28</td></tr>
+     <tr><td>US Ops</td><td>Central</td><td>Three Rivers</td><td>LNNA</td><td>WGVADO1</td><td>inbound</td><td>9:41 AM</td><td>Late</td><td>53</td></tr>
+     <tr><td>US Ops</td><td>Central</td><td>Three Rivers</td><td>PITA</td><td>R3FHNCS</td><td>Inbound</td><td>6:44 PM</td><td>Early</td><td>51</td></tr>
+     <tr><td>US Ops</td><td>Central</td><td>Three Rivers</td><td>AGCA</td><td>IUZ9R1U</td><td>Inbound</td><td>10:31 AM</td><td>Early</td><td>47</td></tr>
+     <tr><td>US Ops</td><td>Central</td><td>Three Rivers</td><td>LBEA</td><td>4B1AEKJ</td><td>Outbound</td><td>10:27 PM</td><td>On Time</td><td>0</td></tr>
+     <tr><td>US Ops</td><td>Central</td><td>Three Rivers</td><td>ERIA</td><td>1Y48UEM</td><td>Inbound</td><td>9:58 PM</td><td>On Time</td><td>0</td></tr>
+     <tr><td>US Ops</td><td>Central</td><td>Three Rivers</td><td>AOOA</td><td>EJD3NR6</td><td>Outbound</td><td>9:30 AM</td><td>Late</td><td>37</td></tr>
+     <tr><td>US Ops</td><td>Central</td><td>Three Rivers</td><td>JSTA</td><td>PSC7XUJ</td><td>Inbound</td><td>9:42 AM</td><td>Late</td><td>1</td></tr>
+     <tr><td>US Ops</td><td>Central</td><td>Three Rivers</td><td>HLGA</td><td>3IOJTYM</td><td>Outbound</td><td>3:15 AM</td><td>Late</td><td>12</td></tr>
+     <tr><td>US Ops</td><td>Central</td><td>Three Rivers</td><td>MGWA</td><td>UBNMUTU</td><td>inbound</td><td>12:23 PM</td><td>Late</td><td>6</td></tr>
+     <tr><td>US Ops</td><td>Central</td><td>Three Rivers</td><td>MEJA</td><td>NOXRFK3</td><td>inbound</td><td>5:31 AM</td><td>Late</td><td>36</td></tr>
+     <tr><td>US Ops</td><td>Central</td><td>Great Lakes</td><td>PLNA</td><td>57MH8UH</td><td>outbound</td><td>11:10 PM</td><td>Late</td><td>19</td></tr>
+     <tr><td>US Ops</td><td>Central</td><td>Great Lakes</td><td>CLUA</td><td>M0U8POJ</td><td>outbound</td><td>1:49 PM</td><td>Late</td><td>58</td></tr>
+     <tr><td>US Ops</td><td>Central</td><td>Great Lakes</td><td>TOLA</td><td>YFNO0PF</td><td>outbound</td><td>3:25 PM</td><td>Late</td><td>50</td></tr>
+     <tr><td>US Ops</td><td>Central</td><td>Great Lakes</td><td>MZZA</td><td>P8PCX9S</td><td>outbound</td><td>10:34 AM</td><td>Late</td><td>22</td></tr>
+     <tr><td>US Ops</td><td>Central</td><td>Great Lakes</td><td>FWAA</td><td>V7CX9F1</td><td>outbound</td><td>7:02 PM</td><td>Late</td><td>1</td></tr>
+     <tr><td>US Ops</td><td>Central</td><td>Great Lakes</td><td>OKKA</td><td>NZMV5OB</td><td>outbound</td><td>7:57 PM</td><td>Early</td><td>32</td></tr>
+     <tr><td>US Ops</td><td>Central</td><td>Great Lakes</td><td>MIEA</td><td>4NHCRV6</td><td>outbound</td><td>10:35 PM</td><td>Early</td><td>35</td></tr>
+     <tr><td>US Ops</td><td>Central</td><td>Great Lakes</td><td>BMGA</td><td>W1JGBDF</td><td>outbound</td><td>1:21 PM</td><td>Late</td><td>0</td></tr>
+     <tr><td>US Ops</td><td>Central</td><td>Great Lakes</td><td>HUFA</td><td>ATEGUW1</td><td>outbound</td><td>2:02 PM</td><td>On Time</td><td>43</td></tr>
+     <tr><td>US Ops</td><td>Central</td><td>Great Lakes</td><td>LAFA</td><td>8CGO6DI</td><td>outbound</td><td>10:04 PM</td><td>Late</td><td>21</td></tr>
+     <tr><td>US Ops</td><td>Central</td><td>South Florida</td><td>ROAA</td><td>8LQBV48</td><td>outbound</td><td>2:46 AM</td><td>Late</td><td>19</td></tr>
+     <tr><td>US Ops</td><td>Central</td><td>South Florida</td><td>LYHA</td><td>XTQY9MJ</td><td>outbound</td><td>10:39 AM</td><td>Early</td><td>56</td></tr>
+     <tr><td>US Ops</td><td>Central</td><td>South Florida</td><td>CRWA</td><td>D4CQUFB</td><td>outbound</td><td>10:42 PM</td><td>On Time</td><td>4</td></tr>
+     <tr><td>US Ops</td><td>Central</td><td>South Florida</td><td>PKBA</td><td>COICVR3</td><td>outbound</td><td>8:39 PM</td><td>On Time</td><td>44</td></tr>
+     <tr><td>US Ops</td><td>Central</td><td>South Florida</td><td>RDUA</td><td>D0WK3N3</td><td>outbound</td><td>11:16 PM</td><td>Early</td><td>26</td></tr>
+     <tr><td>US Ops</td><td>Central</td><td>South Florida</td><td>RWIA</td><td>HN7OOO5</td><td>inbound</td><td>6:20 PM</td><td>Late</td><td>8</td></tr>
+     <tr><td>US Ops</td><td>Central</td><td>South Florida</td><td>HKYA</td><td>JBYYHQV</td><td>inbound</td><td>8:22 PM</td><td>Early</td><td>43</td></tr>
+     <tr><td>US Ops</td><td>Central</td><td>Piedmont</td><td>QWGA</td><td>T5B9YTB</td><td>inbound</td><td>1:45 PM</td><td>Early</td><td>55</td></tr>
+     <tr><td>US Ops</td><td>Central</td><td>Piedmont</td><td>FAYA</td><td>46LW90P</td><td>inbound</td><td>10:19 PM</td><td>On Time</td><td>5</td></tr>
+     <tr><td>US Ops</td><td>Central</td><td>Piedmont</td><td>MRNA</td><td>5U9UCJR</td><td>inbound</td><td>7:17 AM</td><td>On Time</td><td>43</td></tr>
+     <tr><td>US Ops</td><td>Southern</td><td>Southeast</td><td>RMGA</td><td>AGS0YRL</td><td>inbound</td><td>6:21 AM</td><td>Late</td><td>54</td></tr>
+     <tr><td>US Ops</td><td>Southern</td><td>Southeast</td><td>AVLA</td><td>YC3N5H0</td><td>inbound</td><td>9:45 AM</td><td>Late</td><td>56</td></tr>
+     <tr><td>US Ops</td><td>Southern</td><td>Southeast</td><td>GSPA</td><td>8PK8OSI</td><td>outbound</td><td>2:25 AM</td><td>Late</td><td>44</td></tr>
+     <tr><td>US Ops</td><td>Southern</td><td>Southeast</td><td>ANDA</td><td>JN7RMEE</td><td>outbound</td><td>1:36 PM</td><td>Late</td><td>19</td></tr>
+     <tr><td>US Ops</td><td>Southern</td><td>Southeast</td><td>FTYA</td><td>9H7OMB4</td><td>outbound</td><td>4:56 PM</td><td>Late</td><td>1</td></tr>
+     <tr><td>US Ops</td><td>Southern</td><td>Southeast</td><td>MGEA</td><td>KRDFZZD</td><td>outbound</td><td>3:32 PM</td><td>Late</td><td>9</td></tr>
+     <tr><td>US Ops</td><td>Southern</td><td>Southeast</td><td>AHNA</td><td>65GOMZY</td><td>outbound</td><td>11:34 PM</td><td>Late</td><td>4</td></tr>
+     <tr><td>US Ops</td><td>Southern</td><td>Southeast</td><td>NCQA</td><td>00AHYWQ</td><td>outbound</td><td>1:20 PM</td><td>Late</td><td>28</td></tr>
+     <tr><td>US Ops</td><td>Southern</td><td>Southeast</td><td>AGSA</td><td>DIUM456</td><td>inbound</td><td>10:02 AM</td><td>Late</td><td>26</td></tr>
+    </tbody>
+    <tfoot>
+        <tr><th>Division</th><th>Region</th><th>District</th><th>Location</th><th>Vehicle ID</th><th>Inbound/Outbound</th><th>ETA</th><th>Arrival Status</th><th>Early/Late(mins)</th></tr>
+    </tfoot>
+</table>
+
+            
+        
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+  </body>
+  
+  
+<!-- Footer -->
+<div style="height:8vh;position:fixed;bottom:0;width:100%;">
+	<style media="screen" type="text/css">
+		.dropup .dropdown-menu {
+			top: auto;
+			bottom: 100%;
+			right: -100%;
+			margin-bottom: .125rem;
+			max-height: 80vh;
+			overflow-y: auto;
+		}
+		
+		.selectWrapper {
+			width: 100%;
+			height: 5vh;
+			overflow: hidden;
+			position: relative;
+			border: 1px solid #bbb;
+			border-radius: 2px;
+			background:#FFFFFF url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2211%22%20height%3D%2211%22%20viewBox%3D%220%200%2011%2011%22%3E%3Cpath%20d%3D%22M4.33%208.5L0%201L8.66%201z%22%20fill%3D%22%2300AEA9%22%2F%3E%3C%2Fsvg%3E') right 13px center no-repeat;
+		}
+
+		.selectWrapper select {
+				padding: 1vh 40px 0px 20px;
+				font-size: 3vh;
+				line-height: 18px;
+				width: 100%;
+				border: none;
+				box-shadow: none;
+				background: transparent;
+				background-image: none;
+				-webkit-appearance: none;
+				outline: none;
+				cursor: pointer;
+				-moz-appearance: none;
+				text-indent: 0.01px;
+				text-overflow: ellipsis;
+			}
+    </style>
+	
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.9/css/all.css" integrity="sha384-5SOiIsAziJl6AWe0HWRKTXlfcSHKmYV4RBF18PPJ173Kzn7jzMyFuTtk8JA7QQG1" crossorigin="anonymous">
+
+	<nav class="navbar navbar-inverse bg-inverse fixed-bottom navbar-expand-sm dropup" style="background-color:#4B1388; border-width:0;border-radius:0;height:100%;">
+		<div class="container" style="min-width: 100%">
+			<div class="row" style="min-width: 100%">
+				<div class="col" style="min-width: 33%; text-align: center">
+					
+					<div class="btn-group dropup btn-group-sm">
+						<button type="button" class="btn dropdown-toggle" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
+								 style="background-color:#4B1388; color:#fff; border:none">
+							<i class="far fa-compass" style="font-size: 3em; color: white"></i>
+						</button>
+						<div class="dropdown-menu text-left" style="width: 70vw; max-width: 300px; background-color: #f9f9f9">
+							<label style="font-size:3vmin">Region:</label>
+							<br/>
+							<div class="selectWrapper">
+								<select>
+											  <option value="west" selected="selected">Western</option>
+											  <option value="east">Eastern</option>
+											  <option value="cent">Central</option>
+											  <option value="south">Southern</option>
+								</select>
+							</div>
+							<br/>
+						
+							<label style="font-size:3vmin">District:</label>
+							<br/>
+							<div class="selectWrapper">
+								<select>
+											  <option value="canyon" selected="selected">Canyon</option>
+											  <option value="mountain">Mountain</option>
+											  <option value="pacific">Pacific Northwest</option>
+											</select>
+							</div>
+							<br/>
+						
+							<label style="font-size:3vmin">Location:</label>
+							<br/>
+							<div class="selectWrapper">
+								<select>
+									  <option value="none">None Selected</option>
+									  <option value="orha" selected="selected">ORHA</option>
+									  <option value="beda">BEDA</option>
+									  <option value="nzwa">NZWA</option>
+									  <option value="bvya">BVYA</option>
+									  <option value="pvda">PVDA</option>
+									  <option value="psma">PSMA</option>
+									  <option value="bgra">BGRA</option>
+									  <option value="auga">AUGA</option>
+									  <option value="owda">OWDA</option>
+									  <option value="cefa">CEFA</option>									  
+								</select>
+							</div>
+							<br/>
+							<p style="font-size:3vmin;">Manager:<br/><span style="font-size:2vmin">Shelly Garner</span></p>
+						</div>
+					</div>
+				</div>
+				<div class="col" style="min-width: 33%; text-align: center">
+					<div class="btn-group dropup btn-group-sm">
+						<button type="button" class="btn dropdown-toggle" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
+								 style="background-color:#4B1388; color:#fff; border:none">
+							<i class="far fa-clock" style="font-size: 3em; color: white"></i>
+						</button>
+						<div class="dropdown-menu text-left" style="width: 70vw; max-width: 300px; background-color: #f9f9f9; left:-100%; right:0%">
+							<label style="font-size:3vmin">Start Time & Date:</label>
+							<br/>
+							<form>
+								<div style="padding:2px">
+									<input id="date" type="date">
+								</div>
+								<div style="padding:2px">
+									<input id="time" type="time">
+									<label>(CST)</label>
+								</div>
+							</form>
+							<br/>
+
+							<label style="font-size:3vmin">End Time & Date:</label>
+							<br/>
+							<form>
+								<div style="padding:2px">
+									<input id="date" type="date">
+								</div>
+								<div style="padding:2px">
+									<input id="time" type="time">
+									<label>(CST)</label>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				<div class="col" style="min-width: 33%; text-align: center">
+					<div class="btn-group dropup btn-group-sm">
+						<button type="button" class="btn dropdown-toggle" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
+								 style="background-color:#4B1388; color:#fff; border:none">
+							<i class="fas fa-user" style="font-size: 3em; color: white"></i></a>
+						</button>
+						<div class="dropdown-menu text-left scroll-menu" style="width: 70vw; max-width: 300px; background-color: #f9f9f9; left:-200%; right:0%">
+							<!-- Drag and Drop Tiers -->
+							<label style="font-size:3vmin">Default Drilldown:</label>
+							<br/>
+							<div class="container">
+								<div class="row" style="width: 100%">
+									<div class="col" style="width: 33%"><label style="font-size:2vmin">Region:</label></div>
+									<div class="col" style="width: 33%">
+											<select>
+											  <option value="west" selected="selected">Western</option>
+											  <option value="east">Eastern</option>
+											  <option value="cent">Central</option>
+											  <option value="south">Southern</option>
+											</select>
+									</div>
+									<div class="col"  style="width: 33%"></div>
+								</div>
+								<div class="row" style="width: 100%">
+									<div class="col" style="width: 33%"><label style="font-size:2vmin">District:</label></div>
+									<div class="col" style="width: 33%">
+											<select>
+											  <option value="canyon" selected="selected">Canyon</option>
+											  <option value="mountain">Mountain</option>
+											  <option value="pacific">Pacific Northwest</option>
+											</select>
+									</div>
+									<div class="col" style="width: 33%"></div>
+								</div>
+								<div class="row" style="width: 100%">
+									<div class="col" style="width: 33%"><label style="font-size:2vmin">Location:</label></div>
+									<div class="col" style="width: 33%">
+											<select>
+											  <option value="WBTFA" selected="selected">WBTFA</option>
+											  <option value="east">MSCA</option>
+											  <option value="cent">SGUA</option>
+											  <option value="south">OGDA</option>
+											</select>
+									</div>
+									<div class="col" style="width: 33%"></div>
+								</div>
+							</div>
+							
+							<label style="font-size:3vmin">Default Date Range:</label>
+							<br/>
+							<div class="container">
+								<div class="row" style="width: 100%">
+									<div class="col-4"><label style="font-size:1.5vmin">Start Date:</label></div>
+									<div class="col-8">
+										<input id="sddate" type="date" style="min-width:10vw; font-size:2vmin"></input>
+									</div>
+								</div>
+								<div class="row" style="width: 100%">
+									<div class="col-4"><label style="font-size:1.5vmin">Start Time:</label></div>
+									<div class="col-8">
+										<input id="sdtime" type="time" style="min-width:11vw; font-size:2vmin"></input>
+									</div>
+								</div>
+							</div>
+							
+							<div class="container">
+								<div class="row" style="width: 100%">
+									<div class="col-4"><label style="font-size:1.5vmin">End Date:</label></div>
+									<div class="col-8">
+										<input id="eddate" type="date" style="min-width:10vw; font-size:2vmin"></input>
+									</div>
+								</div>
+								<div class="row" style="width: 100%">
+									<div class="col-4"><label style="font-size:1.5vmin">End Time:</label></div>
+									<div class="col-8">
+										<input id="edtime" type="time" style="min-width:10vw; font-size:2vmin"></input>
+									</div>
+								</div>
+							</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</nav>
+	
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+ 
+ <script>
+	$('.dropdown-menu').on('click', function(event) {
+		event.stopPropagation();
+	});
+
+	$('.selectpicker').selectpicker({
+		container: 'body'
+	});
+
+	$('body').on('click', function(event) {
+		var target = $(event.target);
+		if (target.parents('.bootstrap-select').length) {
+			event.stopPropagation();
+			$('.bootstrap-select.open').removeClass('open');
+		}
+	});	
+	
+  </script>
+</div>
+</html>

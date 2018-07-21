@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+
+<!-- Head -->
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
+    <meta name="description" content="">
+    <meta name="author" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>Operations Metric Platform</title>
+  <link rel="stylesheet" type="text/css" href="DEXChart.css"/>
+  <link href="https://fonts.googleapis.com/css?family=Cousine" rel="stylesheet">
+  <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+  <script src="DEXChart.js"></script>
+</head>
+
+<!-- Body -->
+
+<body>
+
+<!-- Navbar -->
+
+<div class="nav-container">
+  <div class="top-navbar">
+    <div class="title-container">
+      <h3>Delivery Exceptions</h3>
+    </div>
+    <div class="icon">
+      <a href="index.html"><img src='images/Back.svg' width=40 style="filter: brightness(170%);"></a>
+    </div>
+  </div>
+</div>
+
+<!-- Content Body -->
+
+<div>
+  <div id="switch-container">
+	<table>
+		<tr>
+			<td class="notChosen" id="chooseMap" onclick="showMapView()"><a> Map View </a></td>
+			<td class="chosen" id="chooseChart" onclick="showChartView()"><a> Chart View </a></td>
+		</tr>
+	</table>
+  </div>
+  
+  <div id="chart-container">
+	
+	<div id="tierNames"	class="chartTierNames">
+		<script>
+			for(var i = 1; i <=6; i++) document.write("<div class='tiers'><h5>TIER " + i + "</h5><p id='tier" + i + "'></p></div>");
+		</script>
+	</div>
+	
+	<div id="chart">
+	<canvas id="canvas"></canvas>
+	</div>
+	
+	<div id="map" style="display:none">
+		<canvas id="mapCanvas"></canvas>
+	</div>
+  </div>
+</div>
+
+<!-- Footer -->
+<div style="height:10vh">
+	<style media="screen" type="text/css">
+		.dropup .dropdown-menu {
+			top: auto;
+			bottom: 100%;
+			right: -100%;
+			margin-bottom: .125rem;
+			max-height: 80vh;
+			overflow-y: auto;
+		}
+		
+		.selectWrapper {
+			width: 100%;
+			height: 5vh;
+			overflow: hidden;
+			position: relative;
+			border: 1px solid #bbb;
+			border-radius: 2px;
+			background:#FFFFFF url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2211%22%20height%3D%2211%22%20viewBox%3D%220%200%2011%2011%22%3E%3Cpath%20d%3D%22M4.33%208.5L0%201L8.66%201z%22%20fill%3D%22%2300AEA9%22%2F%3E%3C%2Fsvg%3E') right 13px center no-repeat;
+		}
+
+		.selectWrapper select {
+				padding: 1vh 40px 0px 20px;
+				font-size: 3vh;
+				line-height: 18px;
+				width: 100%;
+				border: none;
+				box-shadow: none;
+				background: transparent;
+				background-image: none;
+				-webkit-appearance: none;
+				outline: none;
+				cursor: pointer;
+				-moz-appearance: none;
+				text-indent: 0.01px;
+				text-overflow: ellipsis;
+			}
+    </style>
+	
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.9/css/all.css" integrity="sha384-5SOiIsAziJl6AWe0HWRKTXlfcSHKmYV4RBF18PPJ173Kzn7jzMyFuTtk8JA7QQG1" crossorigin="anonymous">
+
+    <!-- Bootstrap core CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  
+	<script>
+	function allowDrop(ev) {
+		ev.preventDefault();
+	}
+
+	function drag(ev) {
+		ev.dataTransfer.setData("text", ev.target.id);
+	}
+
+	function drop(ev) {
+		ev.preventDefault();
+		var data = ev.dataTransfer.getData("text");
+		ev.target.appendChild(document.getElementById(data));
+	}
+	</script>
+
+	<nav class="navbar navbar-inverse bg-inverse fixed-bottom navbar-expand-sm dropup" style="background-color:#4B1388;">
+		<div class="container" style="min-width: 100%">
+			<div class="row" style="min-width: 100%">
+				<div class="col" style="min-width: 33%; text-align: center">
+					
+					<div class="btn-group dropup btn-group-sm">
+						<button type="button" class="btn dropdown-toggle" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
+								 style="background-color:#4B1388; color:#fff; border:none">
+							<i class="far fa-compass" style="font-size: 3em; color: white"></i>
+						</button>
+						<div class="dropdown-menu text-left" style="width: 70vw; max-width: 300px; background-color: #f9f9f9">
+							<label style="font-size:3vmin">Region:</label>
+							<br/>
+							<div class="selectWrapper">
+								<select>
+											  <option value="west" selected="selected">Western</option>
+											  <option value="east">Eastern</option>
+											  <option value="cent">Central</option>
+											  <option value="south">Southern</option>
+								</select>
+							</div>
+							<br/>
+						
+							<label style="font-size:3vmin">District:</label>
+							<br/>
+							<div class="selectWrapper">
+								<select>
+											  <option value="canyon" selected="selected">Canyon</option>
+											  <option value="mountain">Mountain</option>
+											  <option value="pacific">Pacific Northwest</option>
+											</select>
+							</div>
+							<br/>
+						
+							<label style="font-size:3vmin">Location:</label>
+							<br/>
+							<div class="selectWrapper">
+								<select>
+									  <option value="none">None Selected</option>
+									  <option value="orha" selected="selected">ORHA</option>
+									  <option value="beda">BEDA</option>
+									  <option value="nzwa">NZWA</option>
+									  <option value="bvya">BVYA</option>
+									  <option value="pvda">PVDA</option>
+									  <option value="psma">PSMA</option>
+									  <option value="bgra">BGRA</option>
+									  <option value="auga">AUGA</option>
+									  <option value="owda">OWDA</option>
+									  <option value="cefa">CEFA</option>									  
+								</select>
+							</div>
+							<br/>
+							<p style="font-size:3vmin;">Manager:<br/><span style="font-size:2vmin">Shelly Garner</span></p>
+						</div>
+					</div>
+				</div>
+				<div class="col" style="min-width: 33%; text-align: center">
+					<div class="btn-group dropup btn-group-sm">
+						<button type="button" class="btn dropdown-toggle" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
+								 style="background-color:#4B1388; color:#fff; border:none">
+							<i class="far fa-clock" style="font-size: 3em; color: white"></i>
+						</button>
+						<div class="dropdown-menu text-left" style="width: 70vw; max-width: 300px; background-color: #f9f9f9; left:-100%; right:0%">
+							<label style="font-size:3vmin">Start Time & Date:</label>
+							<br/>
+							<form>
+								<div style="padding:2px">
+									<input id="date" type="date">
+								</div>
+								<div style="padding:2px">
+									<input id="time" type="time">
+									<label>(CST)</label>
+								</div>
+							</form>
+							<br/>
+
+							<label style="font-size:3vmin">End Time & Date:</label>
+							<br/>
+							<form>
+								<div style="padding:2px">
+									<input id="date" type="date">
+								</div>
+								<div style="padding:2px">
+									<input id="time" type="time">
+									<label>(CST)</label>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				<div class="col" style="min-width: 33%; text-align: center">
+					<div class="btn-group dropup btn-group-sm">
+						<button type="button" class="btn dropdown-toggle" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
+								 style="background-color:#4B1388; color:#fff; border:none">
+							<i class="fas fa-user" style="font-size: 3em; color: white"></i></a>
+						</button>
+						<div class="dropdown-menu text-left scroll-menu" style="width: 70vw; max-width: 300px; background-color: #f9f9f9; left:-200%; right:0%">
+							<!-- Drag and Drop Tiers -->
+							<label style="font-size:3vmin">Default Drilldown:</label>
+							<br/>
+							<div class="container">
+								<div class="row" style="width: 100%">
+									<div class="col" style="width: 33%"><label style="font-size:2vmin">Region:</label></div>
+									<div class="col" style="width: 33%">
+											<select>
+											  <option value="west" selected="selected">Western</option>
+											  <option value="east">Eastern</option>
+											  <option value="cent">Central</option>
+											  <option value="south">Southern</option>
+											</select>
+									</div>
+									<div class="col"  style="width: 33%"></div>
+								</div>
+								<div class="row" style="width: 100%">
+									<div class="col" style="width: 33%"><label style="font-size:2vmin">District:</label></div>
+									<div class="col" style="width: 33%">
+											<select>
+											  <option value="canyon" selected="selected">Canyon</option>
+											  <option value="mountain">Mountain</option>
+											  <option value="pacific">Pacific Northwest</option>
+											</select>
+									</div>
+									<div class="col" style="width: 33%"></div>
+								</div>
+								<div class="row" style="width: 100%">
+									<div class="col" style="width: 33%"><label style="font-size:2vmin">Location:</label></div>
+									<div class="col" style="width: 33%">
+											<select>
+											  <option value="WBTFA" selected="selected">WBTFA</option>
+											  <option value="east">MSCA</option>
+											  <option value="cent">SGUA</option>
+											  <option value="south">OGDA</option>
+											</select>
+									</div>
+									<div class="col" style="width: 33%"></div>
+								</div>
+							</div>
+							
+							<label style="font-size:3vmin">Default Date Range:</label>
+							<br/>
+							<div class="container">
+								<div class="row" style="width: 100%">
+									<div class="col-4"><label style="font-size:1.5vmin">Start Date:</label></div>
+									<div class="col-8">
+										<input id="sddate" type="date" style="min-width:10vw; font-size:2vmin"></input>
+									</div>
+								</div>
+								<div class="row" style="width: 100%">
+									<div class="col-4"><label style="font-size:1.5vmin">Start Time:</label></div>
+									<div class="col-8">
+										<input id="sdtime" type="time" style="min-width:11vw; font-size:2vmin"></input>
+									</div>
+								</div>
+							</div>
+							
+							<div class="container">
+								<div class="row" style="width: 100%">
+									<div class="col-4"><label style="font-size:1.5vmin">End Date:</label></div>
+									<div class="col-8">
+										<input id="eddate" type="date" style="min-width:10vw; font-size:2vmin"></input>
+									</div>
+								</div>
+								<div class="row" style="width: 100%">
+									<div class="col-4"><label style="font-size:1.5vmin">End Time:</label></div>
+									<div class="col-8">
+										<input id="edtime" type="time" style="min-width:10vw; font-size:2vmin"></input>
+									</div>
+								</div>
+							</div>
+							
+
+							<br/>
+							<label style="font-size:3vmin">Tier 1:</label>
+							<div ondrop="drop(event)" ondragover="allowDrop(event)" style="min-width:18vw; min-height:10vh; border: 2px solid; margin: 3px">
+								<label id="drag1" class="noDrop" draggable="true" ondragstart="drag(event)" style="background-color: white; border: 1px solid; margin: 2px">#1-Lost</label>
+								<label id="drag2" class="noDrop" draggable="true" ondragstart="drag(event)" style="background-color: white; border: 1px solid; margin: 2px">#3-Stolen</label>
+								<label id="drag7" class="noDrop" draggable="true" ondragstart="drag(event)" style="background-color: white; border: 1px solid; margin: 2px">#4-Broken</label>
+							</div>
+							<label style="font-size:3vmin">Tier 2:</label>
+							<div ondrop="drop(event)" ondragover="allowDrop(event)" style="min-width:18vw; min-height:10vh; border: 2px solid; margin: 3px">
+								<label id="drag35" class="noDrop" draggable="true" ondragstart="drag(event)" style="background-color: white; border: 1px solid; margin: 2px">#10-Weather</label>
+								<label id="drag34" class="noDrop" draggable="true" ondragstart="drag(event)" style="background-color: white; border: 1px solid; margin: 2px">#8-NoSign</label>
+								<label id="drag33" class="noDrop" draggable="true" ondragstart="drag(event)" style="background-color: white; border: 1px solid; margin: 2px">#2-Absent</label>
+								<label id="drag32" class="noDrop" draggable="true" ondragstart="drag(event)" style="background-color: white; border: 1px solid; margin: 2px">#7-NoFind</label>
+								<label id="drag31" class="noDrop" draggable="true" ondragstart="drag(event)" style="background-color: white; border: 1px solid; margin: 2px">#6-Late</label>
+							</div>
+							<label style="font-size:3vmin">Tier 3:</label>
+							<div ondrop="drop(event)" ondragover="allowDrop(event)" style="min-width:18vw; min-height:10vh; border: 2px solid; margin: 3px">
+								<label id="drag28" class="noDrop" draggable="true" ondragstart="drag(event)" style="background-color: white; border: 1px solid; margin: 2px">#5-OnPorch</label>
+								<label id="drag27" class="noDrop" draggable="true" ondragstart="drag(event)" style="background-color: white; border: 1px solid; margin: 2px">#9-Destroyed</label>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</nav>
+	
+  
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <script>
+	$('.dropdown-menu').on('click', function(event) {
+		event.stopPropagation();
+	});
+
+	$('.selectpicker').selectpicker({
+		container: 'body'
+	});
+
+	$('body').on('click', function(event) {
+		var target = $(event.target);
+		if (target.parents('.bootstrap-select').length) {
+			event.stopPropagation();
+			$('.bootstrap-select.open').removeClass('open');
+		}
+	});	
+	
+  </script>
+</div>
+</body>
